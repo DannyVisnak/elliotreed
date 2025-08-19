@@ -166,10 +166,12 @@ export default function Home() {
       </motion.div>
 
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 text-white py-20 px-4 relative overflow-hidden">
-        {/* Additional gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-900/30 via-transparent to-purple-600/20"></div>
-        <div className="absolute inset-0 bg-gradient-to-t from-blue-800/40 via-transparent to-blue-600/20"></div>
+      <section className="bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500 text-white py-20 px-4 relative overflow-hidden">
+        {/* Beautiful gradient overlays */}
+        <div className="absolute inset-0 bg-gradient-to-r from-indigo-900/40 via-transparent to-purple-700/30"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-purple-800/50 via-transparent to-indigo-600/30"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-pink-600/20 via-transparent to-yellow-400/10"></div>
+        <div className="absolute inset-0 bg-gradient-to-bl from-blue-600/20 via-transparent to-purple-500/20"></div>
         <div className="max-w-4xl mx-auto text-center relative z-10">
           <motion.h1
             initial={{ y: 30, opacity: 0 }}
@@ -202,8 +204,9 @@ export default function Home() {
               priority
             />
             {/* Gradient overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-blue-900/40 via-blue-600/20 to-transparent rounded-2xl"></div>
-            <div className="absolute inset-0 bg-gradient-to-br from-blue-600/30 via-transparent to-yellow-400/20 rounded-2xl"></div>
+            <div className="absolute inset-0 bg-gradient-to-t from-purple-900/50 via-indigo-600/30 to-transparent rounded-2xl"></div>
+            <div className="absolute inset-0 bg-gradient-to-br from-indigo-600/40 via-transparent to-pink-400/30 rounded-2xl"></div>
+            <div className="absolute inset-0 bg-gradient-to-bl from-purple-600/20 via-transparent to-yellow-400/15 rounded-2xl"></div>
           </motion.div>
 
           <motion.p
