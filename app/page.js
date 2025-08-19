@@ -1,14 +1,17 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import PopupModal from '../components/PopupModal';
+import Confetti from '../components/Confetti';
 import { trackCTAClick } from '../lib/analytics';
 
 export default function Home() {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [spotsLeft, setSpotsLeft] = useState(86);
+  const [currentTestimonial, setCurrentTestimonial] = useState(0);
+  const [showConfetti, setShowConfetti] = useState(false);
 
   // Countdown effect
   useEffect(() => {
@@ -19,9 +22,19 @@ export default function Home() {
     return () => clearInterval(interval);
   }, []);
 
+  // Testimonial carousel
+  useEffect(() => {
+    const carouselInterval = setInterval(() => {
+      setCurrentTestimonial(prev => (prev + 1) % testimonials.length);
+    }, 5000); // Change every 5 seconds
+
+    return () => clearInterval(carouselInterval);
+  }, []);
+
   const handleCTAClick = (ctaName) => {
     trackCTAClick(ctaName);
     setIsPopupOpen(true);
+    setShowConfetti(true);
   };
 
   const benefits = [
@@ -29,26 +42,51 @@ export default function Home() {
       icon: '🎯',
       title: 'The Exact 5-Star Framework',
       description: 'Step-by-step blueprint that top therapists use to create unforgettable sessions that clients rave about online.',
+      details: [
+        'Proven client satisfaction techniques',
+        'Service delivery optimization',
+        'Quality assurance protocols'
+      ]
     },
     {
       icon: '💬',
       title: 'Review Generation Secrets',
       description: 'Discover the subtle techniques that naturally inspire clients to leave glowing 5-star reviews without asking.',
+      details: [
+        'Natural conversation starters',
+        'Follow-up strategies',
+        'Review request timing'
+      ]
     },
     {
       icon: '🔄',
       title: 'Client Retention Mastery',
       description: 'Simple but powerful methods to build unshakeable loyalty that keeps clients booking months in advance.',
+      details: [
+        'Loyalty building techniques',
+        'Re-booking strategies',
+        'Client relationship management'
+      ]
     },
     {
       icon: '✨',
       title: 'Experience Enhancement',
       description: 'Small touches and details that elevate good massages into extraordinary experiences people can\'t stop talking about.',
+      details: [
+        'Atmosphere optimization',
+        'Personal touch elements',
+        'Memorable service details'
+      ]
     },
     {
       icon: '📈',
       title: 'Word-of-Mouth Multiplication',
       description: 'Create sessions so memorable that clients become your biggest advocates, referring friends and family naturally.',
+      details: [
+        'Referral incentive systems',
+        'Client advocacy strategies',
+        'Community building techniques'
+      ]
     },
   ];
 
@@ -112,7 +150,7 @@ export default function Home() {
         initial={{ y: -50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.2 }}
-        className="bg-gradient-to-r from-yellow-400 to-yellow-500 text-gray-800 text-center py-3 mt-16 relative overflow-hidden"
+        className="bg-gradient-to-r from-yellow-400 to-yellow-500 text-gray-800 text-center py-4 mt-16 relative overflow-hidden"
       >
         <div className="flex items-center justify-center gap-4 flex-wrap">
           <span className="flex items-center gap-2 font-semibold">
@@ -160,6 +198,8 @@ export default function Home() {
               className="object-cover rounded-2xl shadow-2xl"
               priority
             />
+            {/* Gradient overlay */}
+            <div className="absolute inset-0 bg-gradient-to-t from-blue-900/20 via-transparent to-transparent rounded-2xl"></div>
           </motion.div>
 
           <motion.p
@@ -216,7 +256,7 @@ export default function Home() {
       </section>
 
       {/* Benefits Section */}
-      <section className="bg-white py-20 px-4">
+      <section className="bg-gradient-to-br from-gray-50 to-white py-20 px-4">
         <div className="max-w-6xl mx-auto">
           <motion.div
             initial={{ y: 30, opacity: 0 }}
@@ -240,11 +280,32 @@ export default function Home() {
                 whileInView={{ y: 0, opacity: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                className="bg-gradient-to-br from-white to-gray-50 p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border border-gray-100"
+                whileHover={{ y: -5, scale: 1.02 }}
+                className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 group"
               >
-                <div className="text-4xl mb-6">{benefit.icon}</div>
+                <motion.div 
+                  className="text-4xl mb-6 group-hover:scale-110 transition-transform duration-300"
+                  whileHover={{ rotate: 5 }}
+                >
+                  {benefit.icon}
+                </motion.div>
                 <h3 className="text-xl font-bold text-gray-800 mb-4">{benefit.title}</h3>
-                <p className="text-gray-600 leading-relaxed">{benefit.description}</p>
+                <p className="text-gray-600 leading-relaxed mb-6">{benefit.description}</p>
+                <ul className="space-y-2">
+                  {benefit.details.map((detail, detailIndex) => (
+                    <motion.li
+                      key={detailIndex}
+                      initial={{ x: -20, opacity: 0 }}
+                      whileInView={{ x: 0, opacity: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: (index * 0.1) + (detailIndex * 0.1) }}
+                      className="flex items-center gap-2 text-sm text-gray-500"
+                    >
+                      <span className="w-2 h-2 bg-yellow-400 rounded-full"></span>
+                      {detail}
+                    </motion.li>
+                  ))}
+                </ul>
               </motion.div>
             ))}
           </div>
@@ -253,7 +314,7 @@ export default function Home() {
 
       {/* Testimonials Section */}
       <section className="bg-gradient-to-br from-blue-50 to-blue-100 py-20 px-4">
-        <div className="max-w-6xl mx-auto">
+        <div className="max-w-4xl mx-auto">
           <motion.div
             initial={{ y: 30, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
@@ -268,24 +329,38 @@ export default function Home() {
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {testimonials.map((testimonial, index) => (
+          {/* Testimonial Carousel */}
+          <div className="relative">
+            <AnimatePresence mode="wait">
               <motion.div
-                key={index}
-                initial={{ y: 30, opacity: 0 }}
-                whileInView={{ y: 0, opacity: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300"
+                key={currentTestimonial}
+                initial={{ opacity: 0, x: 50 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -50 }}
+                transition={{ duration: 0.5 }}
+                className="bg-white p-8 rounded-2xl shadow-lg"
               >
-                <div className="text-2xl mb-4">{testimonial.stars}</div>
-                <p className="text-gray-600 mb-6 italic leading-relaxed">"{testimonial.text}"</p>
+                <div className="text-2xl mb-4">{testimonials[currentTestimonial].stars}</div>
+                <p className="text-gray-600 mb-6 italic leading-relaxed text-lg">"{testimonials[currentTestimonial].text}"</p>
                 <div>
-                  <div className="font-bold text-gray-800">{testimonial.author}</div>
-                  <div className="text-blue-600 text-sm">{testimonial.title}</div>
+                  <div className="font-bold text-gray-800 text-lg">{testimonials[currentTestimonial].author}</div>
+                  <div className="text-blue-600">{testimonials[currentTestimonial].title}</div>
                 </div>
               </motion.div>
-            ))}
+            </AnimatePresence>
+
+            {/* Carousel Navigation */}
+            <div className="flex justify-center mt-8 gap-2">
+              {testimonials.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => setCurrentTestimonial(index)}
+                  className={`w-3 h-3 rounded-full transition-all duration-200 ${
+                    index === currentTestimonial ? 'bg-blue-600 scale-125' : 'bg-gray-300'
+                  }`}
+                />
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -409,6 +484,9 @@ export default function Home() {
 
       {/* Popup Modal */}
       <PopupModal isOpen={isPopupOpen} onClose={() => setIsPopupOpen(false)} />
+      
+      {/* Confetti Animation */}
+      <Confetti isActive={showConfetti} />
     </div>
   );
 }
