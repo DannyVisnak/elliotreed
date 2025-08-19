@@ -150,10 +150,10 @@ export default function Home() {
         initial={{ y: -50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.2 }}
-        className="bg-gradient-to-r from-yellow-400 to-yellow-500 text-gray-800 text-center py-4 mt-16 relative overflow-hidden"
+        className="bg-gradient-to-r from-yellow-400 to-yellow-500 text-gray-800 text-center py-6 mt-16 relative overflow-hidden flex items-center justify-center"
       >
-        <div className="flex items-center justify-center gap-4 flex-wrap">
-          <span className="flex items-center gap-2 font-semibold">
+        <div className="flex items-center justify-center gap-6 flex-wrap">
+          <span className="flex items-center gap-2 font-semibold text-lg">
             🔥 FREE for the first 100 therapists only!
           </span>
           <div className="flex items-center gap-2 bg-black/10 px-4 py-2 rounded-full">
@@ -167,6 +167,9 @@ export default function Home() {
 
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 text-white py-20 px-4 relative overflow-hidden">
+        {/* Additional gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-r from-blue-900/30 via-transparent to-purple-600/20"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-blue-800/40 via-transparent to-blue-600/20"></div>
         <div className="max-w-4xl mx-auto text-center relative z-10">
           <motion.h1
             initial={{ y: 30, opacity: 0 }}
@@ -199,7 +202,8 @@ export default function Home() {
               priority
             />
             {/* Gradient overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-blue-900/20 via-transparent to-transparent rounded-2xl"></div>
+            <div className="absolute inset-0 bg-gradient-to-t from-blue-900/40 via-blue-600/20 to-transparent rounded-2xl"></div>
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-600/30 via-transparent to-yellow-400/20 rounded-2xl"></div>
           </motion.div>
 
           <motion.p
